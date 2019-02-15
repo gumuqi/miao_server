@@ -35,6 +35,9 @@ module.exports = {
       },
       updated_at: {
         type: DATE
+      },
+      winner: {
+        type: STRING(100)
       }
     });
   },
