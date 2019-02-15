@@ -16,7 +16,7 @@ class CommentController extends Controller {
     ctx.body = list;
   }
   /**
-   * 增加一个项目
+   * 增加一条评论
    */
   async create() {
     const ctx = this.ctx;
