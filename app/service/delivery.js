@@ -30,10 +30,20 @@ class DeliveryService extends Service {
     SELECT
       ta.project_id,
       ta.created_at AS deliver_time,
+      ta.isWinner,
       USER.* 
     FROM
-    ( SELECT * FROM delivery WHERE project_id = ${param.id} ) ta
-    LEFT JOIN USER ON ta.user_id = USER.user_id`
+      (
+    SELECT
+      delivery.*,
+      ! isnull( project.winner ) as isWinner 
+    FROM
+      delivery
+      LEFT JOIN project ON delivery.user_id = project.winner 
+    WHERE
+      project_id = ${param.project_id}
+      ) ta
+      LEFT JOIN USER ON ta.user_id = USER.user_id`
     const ctx = this.ctx;
     const list = await this.app.mysql.query(sql);
     return list;

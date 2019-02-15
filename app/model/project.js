@@ -35,7 +35,10 @@ module.exports = app => {
     },
     updated_at: {
       type: DATE
-    }    
+    },
+    winner: {
+      type: STRING(50)
+    }
   },{
     freezeTableName: true,
     tableName: 'project'

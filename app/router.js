@@ -11,8 +11,10 @@ module.exports = app => {
 
   router.get('/getProjectList', controller.project.query);  // 获取项目列表
   router.get('/getProjectDetail', controller.project.queryById);  // 获取单个项目详情
-  router.post('/saveProject', controller.project.save); //保存项目信息
-
+  router.post('/saveProject', controller.project.save); // 保存项目信息
+  router.post('/selectBidder', controller.project.selectBidder); // 选取中标者
+  router.post('/endProject', controller.project.endProject); // 结束项目
+  
   router.get('/getProjectDelivery', controller.delivery.queryUser); // 获取项目的投递者列表
   router.get('/getMyDelivery', controller.delivery.queryProject); // 获取我投递的项目
   router.get('/getDelivered', controller.delivery.getDelivered);  // 获取投递项目的用户列表

@@ -24,13 +24,13 @@ class DeliveryController extends Controller {
     const result = await ctx.service.delivery.create(param);
     ctx.body = result;
   }
-    /**
+  /**
    * 获取投递项目的用户列表
    */
   async getDelivered() {
     const ctx = this.ctx;
     let param = {
-      id: ctx.query.id
+      project_id: ctx.query.id
     }
     let list = await ctx.service.delivery.queryDelivered(param);
     ctx.body = list;

@@ -14,18 +14,13 @@ class ProjectService extends Service {
       where = `where project.user_id = "${param.user_id}"`;
     }
     let sql = `
-    select ta.*,tb.count from
-    (
-    select project.id, name, status, price, technology, duration, avatarUrl, project.updated_at from project
-    left join user
-    on project.user_id = user.user_id
-    ${where} 
-    ) ta
-    left join
-    (
-    select project_id, count(user_id) as count from delivery
-    group by project_id
-    ) tb on ta.id=tb.project_id`;
+    SELECT
+      project.*,
+      tb.count 
+    FROM
+      project
+      ${where}
+      LEFT JOIN ( SELECT project_id, count( user_id ) AS count FROM delivery GROUP BY project_id ) tb ON project.id = tb.project_id`;
     const list = await this.app.mysql.query(sql);
     //console.log('查询项目列表：' + sql)
     return list;
@@ -50,18 +45,52 @@ class ProjectService extends Service {
       price,
       technology,
       duration,
+      user_id,
+      winner,
       project.description,
-      project.updated_at 
+      project.updated_at
     FROM
       project 
     WHERE
       id = "${param.id}" 
       ) ta
-    LEFT JOIN ( SELECT project_id, count( user_id ) AS count FROM delivery GROUP BY	project_id )
     LEFT JOIN ( SELECT project_id, user_id AS uid FROM delivery WHERE user_id = "${param.user_id}" ) tb ON ta.id = tb.project_id
     `;
     const project = await this.app.mysql.query(sql)
     //console.log(sql);
+    return project;
+  }
+  /**
+   * 新增一个项目
+   * @param {Object} param 项目信息
+   * @return {Object} 更新的项目
+   */
+  async selectBidder(param) {
+    let sql = `
+    UPDATE project 
+    SET
+      status = 1,
+      winner = "${param.user_id}"
+    WHERE
+      id = ${param.project_id};
+    `;
+    const project = await this.app.mysql.query(sql)
+    return project;
+  }
+  /**
+   * 新增一个项目
+   * @param {Object} param 项目信息
+   * @return {Object} 更新的项目
+   */
+  async endProject(param) {
+    let sql = `
+    UPDATE project 
+    SET
+      status = 2
+    WHERE
+      id = ${param.project_id};
+    `;
+    const project = await this.app.mysql.query(sql)
     return project;
   }
   /**

@@ -36,6 +36,31 @@ class ProjectController extends Controller {
     ctx.body = project;
   }
   /**
+   * 选中投标者
+   */
+  async selectBidder() {
+    const ctx = this.ctx;
+    const { project_id, user_id } = ctx.request.body;
+    const param = {
+      project_id,
+      user_id
+    }
+    let project = await ctx.service.project.selectBidder(param);
+    ctx.body = project;
+  }
+  /**
+   * 结束项目
+   */
+  async endProject() {
+    const ctx = this.ctx;
+    const { project_id } = ctx.request.body;
+    const param = {
+      project_id
+    }
+    let project = await ctx.service.project.endProject(param);
+    ctx.body = project;
+  }
+  /**
    * 增加/更新一个项目
    */
   async save() {
