@@ -29,19 +29,23 @@ class UserService extends Service {
     return user;
   }
   /**
-   * 通过用户id获取用户详情
-   * @param {Object} param 用户id
+   * 获取用户信息，包括发布/中标的项目数等信息
+   * @param {Object} param 用户id、项目id
    * @return {Object} 用户对象
    */
   async getUser(param) {
-    const ctx = this.ctx;
-    const user = await ctx.model.User.findAll({
-      where: {
-        user_id: param.user_id
-      }
-    });
+    const user = this.app.mysql.query(`
+    SELECT
+      ta.*,
+      count 
+    FROM
+      ( SELECT * FROM USER WHERE user_id = "${param.user_id}" ) ta
+      LEFT JOIN ( SELECT user_id AS uid, count( id ) AS count FROM project GROUP BY user_id ) tb
+    ON ta.user_id = tb.uid
+    `)
     return user;
   }
+
 }
 
 module.exports = UserService;

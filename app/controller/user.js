@@ -18,7 +18,13 @@ class UserController extends Controller {
   async getUser() {
     const ctx = this.ctx;
     let param = ctx.query;
-    const user = await ctx.service.user.getUser(param);
+    let user = await ctx.service.user.getUser(param);
+
+    if (user.length > 0) {
+      user = user[0];
+    } else {
+      user = null;
+    }
     ctx.body = user;
   }
 }

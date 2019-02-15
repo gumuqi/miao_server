@@ -11,9 +11,20 @@ class CommentService extends Service {
   async query(param) {
     const ctx = this.ctx;
 
-    const list = await ctx.model.Comment.findAll({
-      where: param
-    });
+    const list = await this.app.mysql.query(`
+    SELECT
+      project_id,
+      USER.user_id,
+      USER.nick_name,
+      USER.avatarUrl,
+      COMMENT.comment_cont,
+      COMMENT.created_at
+      
+    FROM
+      COMMENT LEFT JOIN USER ON COMMENT.user_id = USER.user_id 
+    WHERE
+      COMMENT.project_id = "${param.project_id}"
+    `)
     return list;
   }
   /**

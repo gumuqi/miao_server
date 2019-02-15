@@ -25,7 +25,7 @@ module.exports = {
         type: INTEGER
       },
       user_id: {
-        type: STRING(50)
+        type: STRING(100)
       },
       description: {
         type: STRING(1000)

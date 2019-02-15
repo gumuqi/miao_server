@@ -13,7 +13,7 @@ module.exports = {
         type: STRING(20)
       },
       user_id: {
-        type: STRING(20)
+        type: STRING(100)
       },
       created_at: {
         type: DATE

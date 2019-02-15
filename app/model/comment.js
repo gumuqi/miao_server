@@ -3,7 +3,7 @@
 module.exports = app => {
   const { STRING, INTEGER, DATE } = app.Sequelize;
 
-  const Products = app.model.define('Comment', {
+  const Comments = app.model.define('Comment', {
     id: {
         type: INTEGER,
         primaryKey: true,
@@ -12,7 +12,7 @@ module.exports = app => {
     comment_cont: {
         type: STRING(400)
     },
-    becomment_userid: {
+    project_id: {
         type: STRING(20)
     },
     user_id: {
@@ -29,9 +29,9 @@ module.exports = app => {
     tableName: 'comment'
   });
 
-  Products.associate = function() {
-    app.model.Comment.belongsTo(app.model.User, { as: 'comment', foreignKey: 'user_id' });
+  Comments.associate = function() {
+    app.model.Comment.belongsTo(app.model.Project, { as: 'comment', foreignKey: 'project_id' });
   };
 
-  return Products;
+  return Comments;
 };

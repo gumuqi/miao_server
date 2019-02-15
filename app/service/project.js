@@ -13,7 +13,7 @@ class ProjectService extends Service {
       // 如果传了user_id，说明要查询的是某个人发布的项目列表
       where = `where project.user_id = "${param.user_id}"`;
     }
-    const list = await this.app.mysql.query(`
+    let sql = `
     select ta.*,tb.count from
     (
     select project.id, name, status, price, technology, duration, avatarUrl, project.updated_at from project
@@ -25,8 +25,9 @@ class ProjectService extends Service {
     (
     select project_id, count(user_id) as count from delivery
     group by project_id
-    ) tb on ta.id=tb.project_id`);
-
+    ) tb on ta.id=tb.project_id`;
+    const list = await this.app.mysql.query(sql);
+    //console.log('查询项目列表：' + sql)
     return list;
     
   }
@@ -34,9 +35,33 @@ class ProjectService extends Service {
    * @param {String} id 项目id
    * @return {Object} 项目
    */
-  async queryById(id) {
-    const ctx = this.ctx;
-    const project = await ctx.model.Project.findById(id);
+  async queryById(param) {
+    let sql = `
+    SELECT
+      ta.*, !isnull(tb.uid) as delivered
+    FROM
+      (
+    SELECT
+      project.id,
+      IF
+      ( project.user_id = "${param.user_id}", 1, 0 ) AS isMine,
+      name,
+      status,
+      price,
+      technology,
+      duration,
+      project.description,
+      project.updated_at 
+    FROM
+      project 
+    WHERE
+      id = "${param.id}" 
+      ) ta
+    LEFT JOIN ( SELECT project_id, count( user_id ) AS count FROM delivery GROUP BY	project_id )
+    LEFT JOIN ( SELECT project_id, user_id AS uid FROM delivery WHERE user_id = "${param.user_id}" ) tb ON ta.id = tb.project_id
+    `;
+    const project = await this.app.mysql.query(sql)
+    //console.log(sql);
     return project;
   }
   /**

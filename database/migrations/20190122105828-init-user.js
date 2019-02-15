@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
       },
       user_id: {
-        type: STRING(30)
+        type: STRING(100)
       },
       nick_name: {
         type: STRING(200)

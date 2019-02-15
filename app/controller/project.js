@@ -22,7 +22,17 @@ class ProjectController extends Controller {
    */
   async queryById() {
     const ctx = this.ctx;
-    const project = await ctx.service.project.queryById(ctx.query.id);
+    let param = {
+      id: ctx.query.id,
+      user_id: ctx.query.user_id
+    }
+    let project = await ctx.service.project.queryById(param);
+
+    if (project.length > 0) {
+      project = project[0];
+    } else {
+      project = null;
+    }
     ctx.body = project;
   }
   /**

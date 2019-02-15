@@ -12,11 +12,11 @@ module.exports = {
       comment_cont: {
           type: STRING(400)
       },
-      becomment_userid: {
-          type: STRING(20)
+      project_id: {
+        type: STRING(20)
       },
       user_id: {
-          type: STRING(20)
+          type: STRING(100)
       },
       created_at: {
           type: DATE

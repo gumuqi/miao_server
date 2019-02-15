@@ -9,10 +9,10 @@ class CommentController extends Controller {
   async query() {
     const ctx = this.ctx;
     const param = {
-      user_id: ctx.query.userId || ''
+      project_id: ctx.query.project_id || ''
     };
 
-    const list = await ctx.service.project.query(param);
+    const list = await ctx.service.comment.query(param);
     ctx.body = list;
   }
   /**
@@ -20,18 +20,17 @@ class CommentController extends Controller {
    */
   async create() {
     const ctx = this.ctx;
-    const { comment_cont, becomment_userid, user_id } = ctx.request.body;
+    const { comment_cont, project_id, user_id } = ctx.request.body;
 
     const param = {
       comment_cont,
-      becomment_userid,
+      project_id,
       user_id
     };
 
-    const project = await ctx.service.project.create(param);
+    const comment = await ctx.service.comment.create(param);
 
-    ctx.status = 201;
-    ctx.body = project;
+    ctx.body = comment;
   }
 }
 

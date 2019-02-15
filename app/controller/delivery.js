@@ -15,6 +15,26 @@ class DeliveryController extends Controller {
   async queryUser() {
 
   }
+  /**
+   * 投递一个项目
+   */
+  async deliver() {
+    const ctx = this.ctx;
+    const param = ctx.request.body;
+    const result = await ctx.service.delivery.create(param);
+    ctx.body = result;
+  }
+    /**
+   * 获取投递项目的用户列表
+   */
+  async getDelivered() {
+    const ctx = this.ctx;
+    let param = {
+      id: ctx.query.id
+    }
+    let list = await ctx.service.delivery.queryDelivered(param);
+    ctx.body = list;
+  }
 }
 
 module.exports = DeliveryController;

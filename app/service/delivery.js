@@ -22,13 +22,21 @@ class DeliveryService extends Service {
     
   }
   /**
-   * @param {String} id 项目id
+   * @param {String} param 查询参数
    * @return {Object} 项目
    */
-  async queryUser(id) {
+  async queryDelivered(param) {
+    let sql = `
+    SELECT
+      ta.project_id,
+      ta.created_at AS deliver_time,
+      USER.* 
+    FROM
+    ( SELECT * FROM delivery WHERE project_id = ${param.id} ) ta
+    LEFT JOIN USER ON ta.user_id = USER.user_id`
     const ctx = this.ctx;
-    const project = await ctx.model.Project.findById(id);
-    return project;
+    const list = await this.app.mysql.query(sql);
+    return list;
   }
   /**
    * 新增一个项目
@@ -38,7 +46,7 @@ class DeliveryService extends Service {
   async create(param) {
     const ctx = this.ctx;
 
-    const project = await ctx.model.Project.create(param);
+    const project = await ctx.model.Delivery.create(param);
 
     return project;
   }

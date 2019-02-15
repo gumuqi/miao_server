@@ -65,7 +65,7 @@ create_time         评论时间
 CREATE TABLE `comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `comment_cont` text,
-  `becomment_userid` varchar(20) DEFAULT NULL,
+  `project_id` varchar(20) DEFAULT NULL,
   `comment_userid` varchar(20) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
