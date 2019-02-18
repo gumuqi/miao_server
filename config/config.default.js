@@ -13,19 +13,19 @@ module.exports = appInfo => {
   config.sequelize = {
     dialect: 'mysql',
     database: 'miao',
-    host: '127.0.0.1',
+    host: '106.12.30.146',
     port: 3306,
     username: 'root',
-    password: '123456',
+    password: 'WangYang534591395@qq.com',
   };
 
   config.mysql = {
     client: {
       database: 'miao',
-      host: '127.0.0.1',
+      host: '106.12.30.146',
       port: 3306,
       user: 'root',
-      password: '123456',
+      password: 'WangYang534591395@qq.com',
     }
   };
 
