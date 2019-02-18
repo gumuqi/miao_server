@@ -14,15 +14,15 @@ class CommentService extends Service {
     const list = await this.app.mysql.query(`
     SELECT
       project_id,
-      USER.user_id,
-      USER.nick_name,
-      USER.avatarUrl,
-      COMMENT.comment_cont,
-      COMMENT.created_at
+      user.user_id,
+      user.nick_name,
+      user.avatarUrl,
+      comment.comment_cont,
+      comment.created_at
     FROM
-      COMMENT LEFT JOIN USER ON COMMENT.user_id = USER.user_id 
+    comment LEFT JOIN user ON comment.user_id = user.user_id 
     WHERE
-      COMMENT.project_id = "${param.project_id}"
+    comment.project_id = "${param.project_id}"
     ORDER BY created_at DESC
     `)
     return list;
@@ -38,7 +38,7 @@ class CommentService extends Service {
     const comment = await ctx.model.Comment.create(param);
 
     let user = await this.app.mysql.query(`
-      SELECT * FROM USER WHERE user_id = "${param.user_id}"
+      SELECT * FROM user WHERE user_id = "${param.user_id}"
     `)
     user = user.length > 0 ? user[0] : {};
 

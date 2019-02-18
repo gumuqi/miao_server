@@ -39,7 +39,7 @@ class UserService extends Service {
       ta.*,
       count 
     FROM
-      ( SELECT * FROM USER WHERE user_id = "${param.user_id}" ) ta
+      ( SELECT * FROM user WHERE user_id = "${param.user_id}" ) ta
       LEFT JOIN ( SELECT user_id AS uid, count( id ) AS count FROM project GROUP BY user_id ) tb
     ON ta.user_id = tb.uid
     `)
