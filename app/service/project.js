@@ -15,12 +15,13 @@ class ProjectService extends Service {
     }
     let sql = `
     SELECT
-      project.*,
+      ta.*,
       tb.count 
     FROM
-      project
-      ${where}
-      LEFT JOIN ( SELECT project_id, count( user_id ) AS count FROM delivery GROUP BY project_id ) tb ON project.id = tb.project_id`;
+      ( SELECT project.* FROM project ${where} ) ta
+    LEFT JOIN
+      ( SELECT project_id, count( user_id ) AS count FROM delivery GROUP BY project_id ) tb
+    ON ta.id = tb.project_id`;
     const list = await this.app.mysql.query(sql);
     //console.log('查询项目列表：' + sql)
     return list;

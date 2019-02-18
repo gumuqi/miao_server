@@ -19,11 +19,11 @@ class CommentService extends Service {
       USER.avatarUrl,
       COMMENT.comment_cont,
       COMMENT.created_at
-      
     FROM
       COMMENT LEFT JOIN USER ON COMMENT.user_id = USER.user_id 
     WHERE
       COMMENT.project_id = "${param.project_id}"
+    ORDER BY created_at DESC
     `)
     return list;
   }
@@ -34,10 +34,23 @@ class CommentService extends Service {
    */
   async create(param) {
     const ctx = this.ctx;
-
+    let result = {};
     const comment = await ctx.model.Comment.create(param);
 
-    return comment;
+    let user = await this.app.mysql.query(`
+      SELECT * FROM USER WHERE user_id = "${param.user_id}"
+    `)
+    user = user.length > 0 ? user[0] : {};
+
+    return {
+      id: comment.id,
+      project_id: comment.project_id,
+      user_id: comment.user_id,
+      nick_name: user.nick_name,
+      avatarUrl: user.avatarUrl,
+      comment_cont: comment.comment_cont,
+      created_at: comment.created_at
+    };
   }
 }
 
