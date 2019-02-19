@@ -3,6 +3,10 @@
 const Service = require('egg').Service;
 
 class UserService extends Service {
+  async getOpenId(param) {
+    const result = await this.app.curl(`https://api.weixin.qq.com/sns/jscode2session?appid=${param.appId}&secret=${param.appSecret}&js_code=${param.code}&grant_type=authorization_code`);
+    return result.data;
+  }
   async login(param) {
     const ctx = this.ctx;
     const project = await ctx.model.User.create(param);

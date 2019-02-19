@@ -5,9 +5,10 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  router.post('/login', controller.user.login)  // 首次登录时保存用户信息
-  router.post('/editUser', controller.user.editUser)  // 编辑个人信息
-  router.get('/getUserInfo', controller.user.getUser) // 获取用户信息，包括发布/中标的项目数等信息
+  router.post('/login', controller.user.login);  // 首次登录时保存用户信息
+  router.post('/editUser', controller.user.editUser);  // 编辑个人信息
+  router.get('/getUserInfo', controller.user.getUser); // 获取用户信息，包括发布/中标的项目数等信息
+  router.get('/getOpenId', controller.user.getOpenId); // 获取当前登录用户openid
 
   router.get('/getProjectList', controller.project.query);  // 获取项目列表
   router.get('/getProjectDetail', controller.project.queryById);  // 获取单个项目详情

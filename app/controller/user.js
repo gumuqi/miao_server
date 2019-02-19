@@ -27,6 +27,12 @@ class UserController extends Controller {
     }
     ctx.body = user;
   }
+  async getOpenId() {
+    const ctx = this.ctx;
+    let param = ctx.query;
+    let userInfo = await this.ctx.service.user.getOpenId(param);
+    ctx.body = userInfo;
+  }
 }
 
 module.exports = UserController;
