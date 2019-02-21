@@ -7,29 +7,7 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1548044611905_6782';
 
   // add your config here
-  config.middleware = [];
-
-
-  config.sequelize = {
-    dialect: 'mysql',
-    database: 'miao',
-    host: '127.0.0.1',
-    port: 3306,
-    username: 'root',
-    //password: '123456',
-    password: 'WangYang534591395@qq.com',
-  };
-
-  config.mysql = {
-    client: {
-      database: 'miao',
-      host: '127.0.0.1',
-      port: 3306,
-      user: 'root',
-      //password: '123456',
-      password: 'WangYang534591395@qq.com',
-    }
-  };
+  config.middleware = ['formatResponse'];
 
   config.view = {
     mapping: {
@@ -41,5 +19,6 @@ module.exports = appInfo => {
     NO_PERMISION: 1001
   };
 
+  
   return config;
 };

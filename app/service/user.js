@@ -8,9 +8,21 @@ class UserService extends Service {
     return result.data;
   }
   async login(param) {
-    const ctx = this.ctx;
-    const project = await ctx.model.User.create(param);
-    return project;
+    let sql = `
+    INSERT INTO user ( user_id, nick_name, avatarUrl, gender, created_at, updated_at ) SELECT
+    '${param.user_id}',
+    '${param.nick_name}',
+    '${param.avatarUrl}',
+    ${param.gender},
+    '${new Date().Format("yyyy-MM-dd hh:mm:ss")}',
+    '${new Date().Format("yyyy-MM-dd hh:mm:ss")}'
+    FROM
+    DUAL 
+    WHERE
+      NOT EXISTS ( SELECT user_id FROM user WHERE user_id = '${param.user_id}' );
+    `;
+    const user = await this.app.mysql.query(sql)
+    return user;
   }
   async edit(param) {
     const ctx = this.ctx;
@@ -38,7 +50,7 @@ class UserService extends Service {
    * @return {Object} 用户对象
    */
   async getUser(param) {
-    const user = this.app.mysql.query(`
+    const user = await this.app.mysql.query(`
     SELECT
       ta.*,
       count 

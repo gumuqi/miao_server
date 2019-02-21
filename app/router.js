@@ -1,5 +1,6 @@
 'use strict';
 
+const Util = require('./util/index');
 /**
  * @param {Egg.Application} app - egg application
  */
